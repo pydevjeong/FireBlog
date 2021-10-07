@@ -140,5 +140,25 @@ nav{
         color: #fff;
     }
 }
+//트렌지션으로 네비게이션 버튼 누르면 1초동안 느리게 나오게
+//아래 있는 모든 클래스는 네비게이션 바에 적용됨
+.mobile-nav-enter-active,
+.mobile-nav-leave-active{
+    
+    transition: all 1s ease;
+}
+
+.mobile-nav-enter{
+    //네비게이션 바를 클릭시 -250px값을 줘서 네비게이션 바를 들여보냄
+    transform: translateX(-250px);
+}
+.mobile-nav-enter-to{
+    //화면이 작아지면 0=> 즉 네비게이션 바가 나옴
+    transform: translateX(0);
+}
+.mobile-nav-leave-to{
+    //leave (화면이 화면 고정값보다(750px)커지거나) 네비게이션 바를 누르면 들여보냄
+    transform: translateX(-250px);
+}
 }
 </style>
