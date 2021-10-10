@@ -46,6 +46,14 @@ export default {
   margin: 0 auto;
 }
 
+.arrow{
+  margin-left: 8px;
+  width: 12px;
+  path{
+    fill: #000;
+  }
+}
+
 .link {
   cursor: pointer;
   text-decoration: none;
