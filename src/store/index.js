@@ -1,5 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import firebase from "firebase/app";
+import "firebase/auth";
+import db from "../firebase/firebaseInit";
+
 
 Vue.use(Vuex)
 
@@ -12,15 +16,47 @@ export default new Vuex.Store({
       {blogTitle: "Blog Card #4",blogCoverPhoto: "stock-4", blogDate:"May 1 , 2021"},
     ],
     editPost: null,
+    user:null,
+    profileEmail:null,
+    profileFirstName:null,
+    profileLastName:null,
+    profileUsername:null,
+    profileId:null,
+    profileInitials:null
   },
   mutations: {
     // 변이 -> 이벤트와 매우 유사 https://vuex.vuejs.org/kr/guide/mutations.html 참고
     toggleEditPost(state,payload){
       state.editPost=payload;
       console.log(state.editPost);
+    },
+    updateUser(state,payload){
+      state.user= payload
+    },
+    setProfileInfo(state,doc){
+      state.profileId = doc.id;
+      state.profileEmail=doc.data().email;
+      state.profileFirstName=doc.data().firstName;
+      state.profileLastName=doc.data().lastName;
+      state.profileUserName=doc.data().username;
+    },
+    setProfileInitials(state){
+      state.profileInitials =
+      state.profileFirstName.match(/(\b\S)?/g).join("")+
+      state.profileLastName.match(/(\b\S)?/g).join("");
     }
   },
   actions: {
+    async getCurrentUser({commit}) {
+      const dataBase= await db.collection("users").doc(firebase.auth().currentUser.uid);
+      //지금 있는 사용자의 uid
+      const dbResults = await dataBase.get();
+      //현재의 사용자를 가져오기
+      commit("setProfileInfo",dbResults);
+      //setProfileInfo로 변이(mutations)하기
+      commit("setProfileInitials");
+      console.log(dbResults);
+    }
   },
   modules: {
   }

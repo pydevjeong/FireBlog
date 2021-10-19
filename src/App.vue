@@ -11,6 +11,8 @@
 <script>
 import Navigation from './components/Navigation.vue'
 import Footer from './components/Footer.vue'
+import firebase from "firebase/app";
+import "firebase/auth";
 
 export default {
   name: "app",
@@ -21,7 +23,16 @@ export default {
     };
   },
   created() {
+    firebase.auth().onAuthStateChanged((user)=> {
+      this.$store.commit("updateUser",user);
+      if(user){
+        this.$store.dispatch("getCurrentUser");
+        console.log(this.$store.state.profileEmail);
+      }
+      //user가 로그인 해 있는지 안해있는지 user로 넘겨주고 받음
+    })
     this.checkRoute();
+    
   },
   mounted() {},
   methods: {
@@ -141,7 +152,11 @@ button,
   background-color: rgba(128,128, 128, 0.5) !important;
     
   }
-
+.error{
+  text-align: center;
+  font-size: 12px;
+  color: red;
+}
 .blog-card-wrap{
   position: relative;
   padding: 80px 16px;
