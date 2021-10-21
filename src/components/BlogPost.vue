@@ -1,5 +1,5 @@
 <template>
-  <div class="blog-wrapper no-user">
+  <div class="blog-wrapper" :class="{'no-user':!user}">
     <div class="blog-content">
       <div>
         <h2 v-if="post.welcomeScreen">{{post.title}}</h2>
@@ -33,6 +33,11 @@ export default {
     // import해준거 components에다가 선언 그리고 위 template안에 선언
     Arrow,
   },
+  computed:{
+    user() {
+      return this.$store.state.user;
+      }
+    }
 }
 </script>
 
