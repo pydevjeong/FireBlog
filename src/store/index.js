@@ -64,8 +64,16 @@ export default new Vuex.Store({
       commit("setProfileInfo",dbResults);
       //setProfileInfo로 변이(mutations)하기
       commit("setProfileInitials");
-      console.log(dbResults);
-    }
+    },
+    async updateUserSettings({commit,state}) {
+      const dataBase=await db.collection('users').doc(state.profileId);
+      await dataBase.update({
+        firstName:state.profileFirstName,
+        lastName:state.profileLastName,
+        username:state.profileUsername,
+      });
+      commit("setProfileInitials");
+    },
   },
   modules: {
   }
