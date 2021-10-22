@@ -17,20 +17,20 @@
         <div class="info">
             <p class="initials">{{this.$store.state.profileInitials}}</p>
         <div class="right">
-            <p>{{this.$store.state.profileFirstName}} {{this.$store.state.profilelastName}}</p>
+            <p>{{this.$store.state.profileFirstName}} {{this.$store.state.profileLastName}}</p>
             <p>{{this.$store.state.profileUsername}}</p>
             <p>{{this.$store.state.profileEmail}}</p>
           </div>
          </div>
          <div class="options">
              <div class="option">
-                 <router-link class="option" to="#">
+                 <router-link class="option" :to="{name:'Profile'}">
                      <userIcon class="icon"/>
                      <p>profile</p>
                  </router-link>
              </div>
              <div class="option">
-                 <router-link class="option" to="#">
+                 <router-link class="option" :to="{name:'Admin'}">
                      <adminIcon class="icon"/>
                      <p>Admin</p>
                  </router-link>
