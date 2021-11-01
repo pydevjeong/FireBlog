@@ -4,21 +4,21 @@
       <div>
         <h2 v-if="post.welcomeScreen">{{post.title}}</h2>
         <!-- 만약 post의 welcomeScreen이 true면 home.vue에서 welcomeScreen 안에 있는 title -> post.title을 보여줘 -->
-        <h2 v-else>{{post.title}}</h2>
+        <h2 v-else>{{post.blogtitle}}</h2>
         <p v-if="post.welcomeScreen">{{post.blogPost}}</p>
-        <p class="content-preview" v-else>{{post.blogHTML}}</p>
+        <p class="content-preview" v-else v-html="post.blogHTML"></p>
         <!-- link link-light=> welcomScreen이 true일때 뒷배경을 흐리게 만드는 -->
         <router-link class="link link-light" v-if="post.welcomScreen" to="#">
           Login/Register<Arrow class="arrow arrow-light" />
         </router-link>
-        <router-link class="link" v-else to="#">
+        <!-- <router-link class="link" v-else to="#">
           View The Post<Arrow class="arrow" />
-        </router-link>
+        </router-link> -->
       </div>
     </div>
       <div class="blog-photo">
         <img v-if="post.welcomeScreen" :src="require(`../assets/blogPhotos/${post.photo}.jpg`)" alt=""/>
-        <img v-else :src="require(`../assets/blogPhotos/${post.blogCoverPhoto}.jpg`)" alt=""/>
+        <img v-else :src="post.blogCoverPhoto" alt=""/>
       </div>
   </div>
 </template>
