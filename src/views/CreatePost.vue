@@ -10,7 +10,9 @@
         <div class="upload-file">
           <label for="blog-photo">Upload Cover Photo</label>
           <input type="file" ref="blogPhoto" id="blog-photo" @change="fileChange" accept=".png,.jpg,.jpeg">
-          <button @click="openPreview" class="preview" :class="{'button-inactive':!this.$store.state.blogPhotoFileURL}">Preview Photo</button>
+          <button @click="openPreview" class="preview" :class="{'button-inactive':!this.$store.state.blogPhotoFileURL}">
+            Preview Photo
+            </button>
           <span>File Chosen: {{this.$store.state.blogPhotoName}}</span>
         </div>
       </div>
@@ -18,8 +20,8 @@
         <vue-editor :editorOptions="editorSettings" v-model="blogHTML" useCustomImageHandler @image-added="imageHandler"/>  
       </div>
       <div class="blog-actions">
-        <button>Publish Blog</button>
-        <router-link class="router-button" to="#">Post Preview</router-link>
+        <button @click="uploadBlog">Publish Blog</button>
+        <router-link class="router-button" :to="{name:'BlogPreview'}">Post Preview</router-link>
       </div>
     </div>
   </div>
@@ -29,6 +31,7 @@
 import BlogCoverPreview from "../components/BlogCoverPreview.vue";
 import firebase from "firebase/app";
 import "firebase/storage"
+// import db from "../firebase/firebaseInit"
 import Quill from "quill";
 window.Quill=Quill;
 const ImageResize =require("quill-image-resize-module").default;
@@ -49,7 +52,7 @@ export default {
     }
   },
     components:{
-    BlogCoverPreview
+    BlogCoverPreview,
   },
   methods:{
     fileChange() {
@@ -79,6 +82,26 @@ export default {
         }
       );
     },
+    uploadBlog(){
+      if(this.blogTitle.length !==0 && this.blogHTML.length !==0){
+        if(this.file){
+          //
+          return;
+        }
+        this.error=true;
+        this.errorMsg="Please ensure you uploaded a cover photo!";
+        setTimeout(() => {
+          this.error=false;
+          }, 5000);
+          return;
+    }
+      this.error=true;
+      this.errorMsg="Please ensure Blog Title & Blog Post has been filled!";
+      setTimeout(() => {
+        this.error=false;
+      }, 5000);
+      return;
+    },
   },
   computed:{
     profileId(){
@@ -92,7 +115,7 @@ export default {
         return this.$store.state.blogTitle;
       },
       set(payload){
-        this.$store.commmit("updateBlogTitle",payload);
+        this.$store.commit("updateBlogTitle",payload);
       }
     },
     blogHTML: {
@@ -100,7 +123,7 @@ export default {
         return this.$store.state.blogHTML;
       },
       set(payload){
-        this.$store.commmit("newBlogPost",payload);
+        this.$store.commit("newBlogPost",payload);
       }
     },
   }
