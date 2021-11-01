@@ -32,7 +32,7 @@ export default {
       //user가 로그인 해 있는지 안해있는지 user로 넘겨주고 받음
     })
     this.checkRoute();
-    
+    this.$store.dispatch("getPost")
   },
   mounted() {},
   methods: {

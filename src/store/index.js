@@ -15,6 +15,10 @@ export default new Vuex.Store({
       {blogTitle: "Blog Card #3",blogCoverPhoto: "stock-3", blogDate:"May 1 , 2021"},
       {blogTitle: "Blog Card #4",blogCoverPhoto: "stock-4", blogDate:"May 1 , 2021"},
     ],
+    blogPosts:[
+
+    ],
+    postLoaded:null,
     blogHTML:"Write your blog title here...",
     blogTitle:"",
     blogPhotoName:"",
@@ -28,6 +32,14 @@ export default new Vuex.Store({
     profileUsername:null,
     profileId:null,
     profileInitials:null
+  },
+  getters:{
+    blogPostsFeed(state){
+      return state.blogPosts.slice(0,2);
+    },
+    blogPostsCards(state){
+      return state.blogPosts.slice(2,6);
+    },
   },
   mutations: {
     // 변이 -> 이벤트와 매우 유사 https://vuex.vuejs.org/kr/guide/mutations.html 참고
@@ -86,6 +98,24 @@ export default new Vuex.Store({
       //setProfileInfo로 변이(mutations)하기
       commit("setProfileInitials");
     },
+    async getPost({state}) {
+      const dataBase= await db.collection('blogPosts').orderBy('date','desc')
+      const dbResults = await dataBase.get();
+      dbResults.forEach((doc) => {
+        if(!state.blogPosts.some((post) => post.blogID === doc.id )) {
+          const data= {
+            blogID: doc.data().blogId,
+            blogHTML:doc.data().blogHTML,
+            blogCoverPhoto:doc.data().blogCoverPhoto,
+            blogTitle: doc.data().blogTitle,
+            blogDate:doc.data().date,
+          };
+          state.blogPosts.push(data)
+        }
+      });
+      state.postLoaded=true;
+      console.log(state.blogPosts);
+    },
     async updateUserSettings({commit,state}) {
       const dataBase=await db.collection('users').doc(state.profileId);
       await dataBase.update({
@@ -96,6 +126,5 @@ export default new Vuex.Store({
       commit("setProfileInitials");
     },
   },
-  modules: {
-  }
+  modules: {},
 });
